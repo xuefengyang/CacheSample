@@ -1,5 +1,5 @@
 <?php 
-  /**
+    
     $file = 'cache.html';
     if (file_exists($file)) {
         $val = file_get_contents($file);
@@ -18,15 +18,7 @@
 
     $val=file_get_contents($file);
 
-    echo $val; */
-
-    //$file = 'cache2.html';
-    ob_start();
-
-    $val = 'hi';
-     echo $val;
-    ob_end_flush();
-
+    echo $val; 
 
     
 ?>
