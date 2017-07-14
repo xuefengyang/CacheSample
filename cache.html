@@ -1,0 +1,586 @@
+<h1>hello world</h1><!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>
+PHP中9大缓存技术总结_慕课手记
+</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta property="qc:admins" content="77103107776157736375" />
+<meta property="wb:webmaster" content="c4f857219bfae3cb" />
+<meta http-equiv="Access-Control-Allow-Origin" content="*" />
+<meta http-equiv="Cache-Control" content="no-transform " />
+<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' *.imooc.com *.mukewang.com *.baidu.com *.sina.com.cn *.bootcss.com">
+
+
+
+<meta name="Description" content="1、全页面静态化缓存 也就是将页面全部生成html静态页面，用户访问时直接访问的静态页面，而不会去走php服务器解析的流程。此种方式，在CMS系统中比较常见，比如dedecms； "/>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/static/moco/v1.0/dist/css/moco.min.css?t=201707131454" type="text/css" />
+
+<script type="text/javascript">
+
+eval(function(p,a,c,k,e,d){e=function(c){return(c<a?"":e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)d[e(c)]=k[c]||e(c);k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1;};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p;}('!4(){3 6=a;3 l=4(){3 b,e=9 y("(^| )"+"c=([^;]*)(;|$)");j(b=h.g.z(e)){k w(b[2])}x{k a}};3 8=4(t){3 f=l();3 7=9 o();7.A(7.d()+B*i*i*r);h.g="c="+t+";s="+7.M()+";N=/;L=O.m";j(t&&t!=f){Q.P.G()}};3 5=9 E();5.H=4(){K(6);6=a;8(0)};5.J=4(){8(1)};6=I(4(){5.n="";8(1)},F);5.n=\'R://p.u.m/p/v/q/D.C?t=\'+9 o().d()}()',54,54,'|||var|function|imgobj|timer|exp|setcookie|new|null|arr|IMCDNS|getTime|reg|_0|cookie|document|60|if|return|getcookie|com|src|Date|static|common|1000|expires||mukewang|img|unescape|else|RegExp|match|setTime|24|png|logo|Image|3000|reload|onload|setTimeout|onerror|clearTimeout|domain|toGMTString|path|imooc|location|window|http'.split('|'),0,{}))
+
+</script>
+
+
+<script type="text/javascript">
+
+var OP_CONFIG={"module":"article","page":"details"};
+var isLogin = 0;
+var is_choice = "";
+var seajsTimestamp="v=201707131454";
+var _msg_unread = 0; 
+var _not_unread = 0; 
+var _cart_num = 0;
+</script>
+
+
+
+
+
+<script>
+var _hmt = _hmt || [];
+var pageInfo = {
+    id: "1478",
+    praiseNum:"38"
+}
+var user = {
+    uid : "",
+    img : "",
+    nickname : ""
+}
+var authorUid = {
+    uid : '2001275'
+}
+</script>
+
+<link rel="stylesheet" href="http://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,article/detail-less.css?v=201707131454" type="text/css" />
+</head>
+<body >
+
+<div id="header">
+    <div class="page-container" id="nav">
+        <div id="logo" class="logo"><a href="/" target="_self" class="hide-text" title="首页">慕课网</a></div>
+
+
+        <button type="button" class="navbar-toggle visible-xs-block js-show-menu" >
+            <i class="icon-menu"></i>
+        </button>
+        <ul class="nav-item">
+                        <li class="set-btn visible-xs-block"><a href="/user/newlogin" target="_self">登录</a> / <a href="/user/newsignup" target="_self">注册</a></li>
+                        
+            <li>
+                <a href="/course/list"  target="_self">课程</a>
+            </li>
+            <li><a href="http://class.imooc.com" class="program-nav " target="_self">职业路径<i class="icn-new"></i></a></li>
+            <li>
+                <a href="http://coding.imooc.com" target="_self">实战</a>
+            </li>
+            <li><a href="/wenda"  target="_self">猿问</a></li>
+            <li><a href="/article" class="active" target="_self">手记</a></li>
+            
+        </ul>
+                <div id="login-area">
+            <ul class="header-unlogin clearfix">
+                <li class="shop-cart" id="shop-cart">
+                    <a href="http://order.imooc.com/pay/cart" class="shop-cart-icon" target="_blank">
+                        <span class="icon-shopping-cart js-endcart"></span>
+                        <span class="shopping_icon js-cart-num" data-ordernum="0"  data-cartnum="0" style='display: none'>0</span>
+                        <span>购物车</span>
+                    </a>
+                    <div class="my-cart" id="js-my-cart"></div>
+                </li>
+                <li class="header-signin">
+                    <a href="#" id="js-signin-btn">登录</a>
+                </li>
+                <li class="header-signup">
+                    <a href="#" id="js-signup-btn">注册</a>
+                </li>
+            </ul>
+        </div>
+                <div class='search-warp clearfix' style='min-width: 32px; height: 60px;'>
+                            <div class="pa searchTags" >
+                                    <a href="http://class.imooc.com/sc/20" target="_blank">前端小白</a>
+                                    <a href="http://class.imooc.com/sc/18" target="_blank">Java 入门</a>
+                                </div>
+            
+            <div class="search-area" data-search="top-banner">
+                <input class="search-input" data-suggest-trigger="suggest-trigger"      type="text" autocomplete="off">
+                <input type='hidden' class='btn_search' data-search-btn="search-btn" />
+                <ul class="search-area-result" data-suggest-result="suggest-result">
+                </ul>
+            </div>
+            <div class='showhide-search' data-show='no'><i class='icon-search'></i></div>
+        </div>
+    </div>
+</div>
+
+<div class="bindHintBox js-bindHintBox hide">
+    <div class="pr">
+        为了账号安全，请及时绑定邮箱和手机<a href="/user/setbindsns" class="ml20 color-red" target="_blank">立即绑定</a>
+        <button  class="closeBindHint js-closeBindHint" type="button"></button>
+        <div class="arrow"> </div>
+    </div>
+</div>
+
+
+<script>
+var isLogin=0
+</script>
+<div class="top-bg-warp">
+	<div class="top-bg clearfix">
+		<div class="top-bg-left l">
+		 					  	<!-- 面包屑 -->
+			    <div class="detail-path">
+			        <a href="/article">手记</a> \ <span>PHP中9大缓存技术总结</span>
+			    </div>
+			    <!-- 面包屑end -->
+		 		   
+			    <div class="detail-title-wrap">
+			        <h1 class="detail-title">
+			        <span class="d-t">PHP中9大缓存技术总结</span>
+			        			        </h1>
+			        <div class="dc-addon clearfix">
+			            <div class="dc-profile clearfix">
+			                <span class="spacer l">2015-09-15 11:06:48</span>
+			                <span class="spacer l spacer-2">7165浏览</span>
+			                <a class="spacer l" href="#comment" >6评论</a>
+			                <div class="share-list l">
+			                	<span class="shareto">分享到</span>
+	                            <div class="share-icon-list bdsharebuttonbox">
+	                                <div class="icon-warp">
+	                                    <a onclick="_hmt.push(['_trackEvent', 'sjtj_top', 'share', 'wx'])" data-track="topshare-1-1" href="#" class="bds_weixin icon-nav icon-share-weichat share-icon" data-cmd="weixin" title="分享到微信"></a>
+	                                </div>
+	                                <div class="icon-warp">
+	                                    <a onclick="_hmt.push(['_trackEvent', 'sjtj_top', 'share', 'wb'])" data-track="topshare-1-2" href="#" class="bds_tsina icon-nav icon-share-weibo share-icon" data-cmd="tsina" title="分享到新浪微博"></a>
+	                                </div>
+	                                <div class="icon-warp">
+	                                    <a onclick="_hmt.push(['_trackEvent', 'sjtj_top', 'share', 'qq'])" data-track="topshare-1-3"  href="#" class="bds_qzone icon-nav icon-share-qq share-icon" data-cmd="qzone" title="分享到QQ空间"></a>    
+	                                </div>                
+	                            </div>
+	                             <!-- 分享 -->
+				                <div class="share-rl-tips share-posi js-share-statue l">
+				                    <span>分享即可 +</span><strong>1积分</strong>
+				                    <span class="rule-arrow flipx"></span>
+				                </div>
+			                </div>
+							<div class="r rinfo">
+												                <div class="font-info">			                	
+					                <a class="font-warp">
+					                	<span class="size-show">字号</span>
+					                	<span class="op-icon icon-drop_down"></span>
+					                	<ul class="hide font-box-s clearfix">
+					                		<li data-size-f="big-size-f" class="b-z">大字</li>
+					                		<li data-size-f="md-size-f" class="m-z">中字</li>
+					                		<li data-size-f="sm-size-f" class="s-z">小字</li>
+					                	</ul>
+					                </a>
+				                </div>
+							</div>			              
+			                
+			            </div>
+			        </div>
+				</div>
+						</div>
+    	<div class="top-bg-right r">
+    <div class="detail-right"><!-- 右侧start -->
+        <div class="recommend-info">
+              <!-- 作者信息 -->
+                                <div class="aside-author">
+                    <div class="p clearfix">
+                        <a href="/u/2001275/articles" class="l" title="朵朵朵" target="_blank">
+                            <img src="http://img.mukewang.com/565e4f210001fbf004400463-100-100.jpg">
+                        </a>
+                    </div>
+                    <p class="u-nick-warp">
+                     <a class="nick" href="/u/2001275/articles" title="朵朵朵" target="_blank">
+                        朵朵朵
+                        </a>
+                                                                        <i class="user-icon great" title="认证作者"></i>
+                               
+                                            </p>
+                   
+                    <span class="user-job">JS工程师</span>
+                    <span class="user-desc">
+                        你必须只有内心丰富，才能摆脱这些生活表面的相似。
+                    </span>
+                    <div class="btn-box clearfix">
+                        <a href="/u/2001275/articles" target="_blank" class="article-num r-bor l">
+                            <span></span>篇手记
+                        </a>
+                        <a href="/u/2001275/articles?type=praise" target="_blank" class="article-recom l">
+                            <span></span>推荐
+                        </a>
+                    </div>
+                </div>
+                                <!-- 推荐信息 -->
+                <div class="recommend-list r-course-list">
+                    <ul>
+                      
+                    </ul>
+                </div>
+               
+        </div>
+        
+        <!-- 免费课程推荐 -->
+        <div class="course-recommend r-course-list hide">
+             <h2></h2>
+             <ul>
+               
+             </ul>
+        </div>    
+
+        <!-- 作者信息end -->
+
+        <!-- 作者热门手记 -->
+                <div class="other-article">
+            <h2>作者的热门手记</h2>
+            <ul>
+                            <li>
+                    <a href="/article/1384" title="半路学编程，可以成为大牛吗？"><h3>半路学编程，可以成为大牛吗？</h3></a>
+                    <div class="show-box clearfix">
+                        <span class="spacer l">18873浏览</span>
+                        <span class="spacer l spacer-2">154推荐</span>
+                        <span class="spacer l" href="" >31评论</span>
+                    </div>
+                </li>
+                            <li>
+                    <a href="/article/1214" title="如何学习Web前端开发？"><h3>如何学习Web前端开发？</h3></a>
+                    <div class="show-box clearfix">
+                        <span class="spacer l">6347浏览</span>
+                        <span class="spacer l spacer-2">158推荐</span>
+                        <span class="spacer l" href="" >19评论</span>
+                    </div>
+                </li>
+                            <li>
+                    <a href="/article/1300" title="11本Java程序员必读的书"><h3>11本Java程序员必读的书</h3></a>
+                    <div class="show-box clearfix">
+                        <span class="spacer l">19562浏览</span>
+                        <span class="spacer l spacer-2">142推荐</span>
+                        <span class="spacer l" href="" >13评论</span>
+                    </div>
+                </li>
+                            <li>
+                    <a href="/article/1145" title="我2年学习编程的经验总结"><h3>我2年学习编程的经验总结</h3></a>
+                    <div class="show-box clearfix">
+                        <span class="spacer l">11939浏览</span>
+                        <span class="spacer l spacer-2">106推荐</span>
+                        <span class="spacer l" href="" >14评论</span>
+                    </div>
+                </li>
+                            <li>
+                    <a href="/article/1305" title="你可以去当程序员了……"><h3>你可以去当程序员了……</h3></a>
+                    <div class="show-box clearfix">
+                        <span class="spacer l">4853浏览</span>
+                        <span class="spacer l spacer-2">85推荐</span>
+                        <span class="spacer l" href="" >25评论</span>
+                    </div>
+                </li>
+                        </ul>
+        </div>
+                <!-- 作者热门手记end -->
+
+        <!-- 广告 -->
+                                    <!-- 广告end -->
+      
+        <!-- 手记目录 -->
+                <!-- 手记目录end -->
+    </div><!-- 右侧end -->
+</div>
+	</div>    
+</div> 
+<div class="opus-wrap clearfix">
+
+<div class="detail-left l">  
+    <!-- 手记详情 -->
+    <div class="detail-content-wrap">
+        
+        <div class="detail-content ">
+            <strong style="display:block;font-size:22px;margin:22px 0 10px">1、全页面静态化缓存</strong>
+<p>也就是将页面全部生成html静态页面，用户访问时直接访问的静态页面，而不会去走php服务器解析的流程。此种方式，在CMS系统中比较常见，比如dedecms；</p>
+<p>一种比较常用的实现方式是用输出缓存：</p>
+<pre class="prettyprint"><code>Ob_start()
+******要运行的代码*******
+$content = Ob_get_contents();
+****将缓存内容写入html文件*****
+Ob_end_clean();</code></pre>
+<strong style="display:block;font-size:22px;margin:22px 0 10px">2、页面部分缓存</strong>
+<p>该种方式，是将一个页面中不经常变的部分进行静态缓存，而经常变化的块不缓存，最后组装在一起显示；可以使用类似于ob_get_contents的方式实现，也可以利用类似ESI之类的页面片段缓存策略，使其用来做动态页面中相对静态的片段部分的缓存(ESI技术，请baidu，此处不详讲)。</p>
+<p>该种方式可以用于如商城中的商品页；</p>
+<strong style="display:block;font-size:22px;margin:22px 0 10px">3、数据缓存</strong>
+<p>顾名思义，就是缓存数据的一种方式；比如，商城中的某个商品信息，当用商品id去请求时，就会得出包括店铺信息、商品信息等数据，此时就可以将这些数据缓存到一个php文件中，文件名包含商品id来建一个唯一标示；下一次有人想查看这个商品时，首先就直接调这个文件里面的信息，而不用再去数据库查询；其实缓存文件中缓存的就是一个php数组之类；</p>
+<p>Ecmall商城系统里面就用了这种方式；</p>
+<strong style="display:block;font-size:22px;margin:22px 0 10px">4、查询缓存</strong>
+<p>其实这跟数据缓存是一个思路，就是根据查询语句来缓存；将查询得到的数据缓存在一个文件中，下次遇到相同的查询时，就直接先从这个文件里面调数据，不会再去查数据库；但此处的缓存文件名可能就需要以查询语句为基点来建立唯一标示；</p>
+<p>按时间变更进行缓存</p>
+<p>其实，这一条不是真正的缓存方式；上面的2、3、4的缓存技术一般都用到了时间变更判断；就是对于缓存文件您需要设一个有效时间，在这个有效时间内，相同的访问才会先取缓存文件的内容，但是超过设定的缓存时间，就需要重新从数据库中获取数据，并生产最新的缓存文件；比如，我将我们商城的首页就是设置2个小时更新一次；</p>
+<strong style="display:block;font-size:22px;margin:22px 0 10px">5、按内容变更进行缓存</strong>
+<p>这个也并非独立的缓存技术，需结合着用；就是当数据库内容被修改时，即刻更新缓存文件；<br />
+比如，一个人流量很大的商城，商品很多，商品表必然比较大，这表的压力也比较重；我们就可以对商品显示页进行页面缓存；</p>
+<p>当商家在后台修改这个商品的信息时，点击保存，我们同时就更新缓存文件；那么，买家访问这个商品信息时，实际上访问的是一个静态页面，而不需要再去访问数据库；</p>
+<p>试想，如果对商品页不缓存，那么每次访问一个商品就要去数据库查一次，如果有10万人在线浏览商品，那服务器压力就大了；</p>
+<strong style="display:block;font-size:22px;margin:22px 0 10px">6、内存式缓存</strong>
+<p>提到这个，可能大家想到的首先就是Memcached；memcached是高性能的分布式内存缓存服务器。 一般的使用目的是，通过缓存数据库查询结果，减少数据库访问次数，以提高动态Web应用的速度、 提高可扩展性。</p>
+<p>它就是将需要缓存的信息，缓存到系统内存中，需要获取信息时，直接到内存中取；比较常用的方式就是 key–&gt;value方式；</p>
+<pre class="prettyprint"><code>&lt;?php 
+     $memcachehost = '192.168.6.191';
+     $memcacheport = 11211;
+     $memcachelife = 60;
+     $memcache = new Memcache;
+     $memcache-&gt;connect($memcachehost,$memcacheport) or die ("Could not connect");
+     $memcache-&gt;set('key','缓存的内容');
+     $get = $memcache-&gt;get($key);       //获取信息
+?&gt;</code></pre>
+<strong style="display:block;font-size:22px;margin:22px 0 10px">7、apache缓存模块</strong>
+<p>apache安装完以后，是不允许被cache的。如果外接了cache或squid服务器要求进行web加速的话，就需要在htttpd.conf里进行设置，当然前提是在安装apache的时候要激活mod_cache的模块。</p>
+<p>安装apache时：./configure –enable-cache –enable-disk-cache –enable-mem-cache</p>
+<strong style="display:block;font-size:22px;margin:22px 0 10px">8、php APC缓存扩展</strong>
+<p>Php有一个APC缓存扩展，windows下面为php_apc.dll，需要先加载这个模块，然后是在php.ini里面进行配置：</p>
+<pre class="prettyprint"><code>[apc] 
+     extension=php_apc.dll 
+     apc.rfc1867 = on 
+     upload_max_filesize = 100M 
+     post_max_size = 100M 
+     apc.max_file_size = 200M 
+     upload_max_filesize = 1000M 
+     post_max_size = 1000M 
+     max_execution_time = 600 ;   每个PHP页面运行的最大时间值(秒)，默认30秒 
+     max_input_time = 600 ;       每个PHP页面接收数据所需的最大时间，默认60 
+     memory_limit = 128M ;       每个PHP页面所吃掉的最大内存，默认8M</code></pre>
+<strong style="display:block;font-size:22px;margin:22px 0 10px">9、Opcode缓存</strong>
+<p>我们知道，php的执行流程可以用下图来展示：<br />
+<img title=PHP中9大缓存技术总结_ 图片1 src="http://img.mukewang.com/55f78ad30001442e04500387.jpg" alt="图片描述" /><br />
+首先php代码被解析为Tokens，然后再编译为Opcode码，最后执行Opcode码，返回结果；所以，对于相同的php文件，第一次运行时可以缓存其Opcode码，下次再执行这个页面时，直接会去找到缓存下的opcode码，直接执行最后一步，而不再需要中间的步骤了。</p>
+<p>比较知名的是XCache、Turck MM Cache、PHP Accelerator等。</p>
+<hr />
+<p>via-<a href="http://www.topthink.com/topic/12571.html" target="_blank">topthink</a></p>
+        </div>
+       
+        <!-- 标签 -->
+        
+            
+        <!-- 推荐 --> 
+                <div class="praise-box">
+            <button id="js-praise"><span class="icon-thumb_o"></span></button>
+        </div>
+                
+        <div class="show-praise-wrap">
+            <div class="show-praise-user clearfix">
+                <div class="praise-icon">
+                    <ul id="js-praise-show" class="clearfix">
+                    </ul>
+                </div>
+
+                <div class="praise-num">
+                    <span class="num">38</span>
+                    <span class="person">人</span>推荐
+                </div>
+            </div>
+        </div>
+        
+        <!-- 推荐end -->
+
+        <!-- 分享&收藏 -->
+        <div class="active-box hide">            
+            <div class="share-box">
+                <!-- 分享 -->
+                <div class="share-rl-tips share-posi js-share-statue l">
+                    <span>分享即可 +</span><strong>1积分</strong>
+                    <span class="rule-arrow flipx"></span>
+                </div>
+                <div class="small-share">
+                    <ul class="share-wrap">
+                        <li class="weichat-posi">
+                            <span class="shareto">分享到</span>
+                            <div class="bdsharebuttonbox weichat-style">
+                                <div class="icon-warp">
+                                    <a onclick="_hmt.push(['_trackEvent', 'sjtj_left', 'share', 'wx'])" data-track="letfshare-1-1"  href="#" class="bds_weixin icon-nav icon-share-weichat share-icon" data-cmd="weixin" title="分享到微信"></a>
+                                </div>
+                                <div class="icon-warp">
+                                    <a onclick="_hmt.push(['_trackEvent', 'sjtj_left', 'share', 'wb'])" data-track="letfshare-1-2" href="#" class="bds_tsina icon-nav icon-share-weibo share-icon" data-cmd="tsina" title="分享到新浪微博"></a>
+                                </div>
+                                <div class="icon-warp">
+                                    <a onclick="_hmt.push(['_trackEvent', 'sjtj_left', 'share', 'qq'])" data-track="letfshare-1-3" href="#" class="bds_qzone icon-nav icon-share-qq share-icon" data-cmd="qzone" title="分享到QQ空间"></a>    
+                                </div>
+                                <div class="icon-warp">
+                                  <div class="follow-warp">
+                                    <a onclick="_hmt.push(['_trackEvent', 'sjtj_left', 'share', 'pl'])" data-track="pl-1-1" href="#comment" class="icon-nav imv2-textsms"  title="评论"></a>  
+                                     <span>评论</span>     
+                                  </div>
+                                </div>
+                                <div class="icon-warp">
+                                                                             <div class="follow-warp">
+                                            <a onclick="_hmt.push(['_trackEvent', 'sjtj_left', 'share', 'sc'])" data-track="sc-1-1" id="js-follow" data-id="1478" href="javascript:" class="dc-follow  icon-nav icon-star2 "  title="收藏"></a>
+                                            <span>收藏</span>   
+                                        </div>
+                                                                    </div>                                   
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- 分享&收藏 end -->
+    </div>
+    <!-- 手记详情end -->
+  
+    <!-- 相关阅读 -->
+    <div class="react-article">
+        <ul></ul>
+    </div>
+    <!-- 相关阅读end -->
+
+
+    <div class="detail-feedback-wrap">
+        <!-- 评论框 -->
+        <div class="df-ipt-wrap" id="comment">
+                    <div class="feeds-author">
+                <span><img src="http://img.mukewang.com/images/avatar_default.png" width="40" alt=""></span>
+            </div>
+            <div id="js-text-login" class="df-text df-text-login">
+                <textarea class="ipt"  readonly>请登录后，发表评论</textarea>
+                <div class="df-bottom clearfix">
+                    <button id="js-submit" class="btn btn-green disabled r">评论（Enter+Ctrl）</button>
+                </div>
+            </div>
+                </div>
+        <!-- 评论框end -->
+
+        <!-- 热门评论 -->
+        <div class="hot-df-title">热门评论</div>
+        <div id="js-feedback-hot-list-wrap" class="feedback-list">
+            <p class="feedback-loading">
+            评论加载中...
+            </p>
+        </div>
+        <!-- 评论 -->
+        <div class="df-title" id="all_comments"><span class="comment-num"><i></i>条</span>评论</div>
+        <div id="js-feedback-list-wrap" class="feedback-list">
+            <p class="feedback-loading">
+            评论加载中...
+            </p>
+        </div>
+        <!-- 分页页码  -->
+        <div class="qa-comment-page"></div>
+    </div>
+</div><!-- 左侧end -->
+<div class="hide">
+    <input type="hidden" data-pic="55f78b460001442e04500387" id='js-share-img'>
+    <input type="hidden" data-pic="http://img.mukewang.com/565e4f210001fbf004400463-100-100.jpg" id='js-img-author'>
+</div>
+<div class="r">
+</div>
+
+
+
+
+</div><!--opus-wrap end-->
+
+<div id="main">
+
+</div>
+
+<div id="footer" >
+    <div class="waper">
+        <div class="footerwaper clearfix">
+            <div class="followus r">
+                <a class="followus-weixin" href="javascript:;"  target="_blank" title="微信">
+                    <div class="flw-weixin-box"></div>
+                </a>
+                <a class="followus-weibo" href="http://weibo.com/u/3306361973"  target="_blank" title="新浪微博"></a>
+                <a class="followus-qzone" href="http://user.qzone.qq.com/1059809142/" target="_blank" title="QQ空间"></a>
+            </div>
+            <div class="footer_intro l">
+                <div class="footer_link">
+                    <ul>
+                        <li><a href="http://www.imooc.com/" target="_blank">网站首页</a></li>
+                        <li><a href="/about/cooperate" target="_blank" title="企业合作">企业合作</a></li>
+                        <li><a href="/about/job" target="_blank">人才招聘</a></li>
+                        <li> <a href="/about/contact" target="_blank">联系我们</a></li>
+                        <li> <a href="/about/recruit" target="_blank">讲师招募</a></li>
+                        <li> <a href="/about/faq" target="_blank">常见问题</a></li>
+                        <li> <a href="/user/feedback" target="_blank">意见反馈</a></li>
+                        <li><a href="http://daxue.imooc.com/" target="_blank">慕课大学</a></li>
+                        <li> <a href="/about/friendly" target="_blank">友情链接</a></li>
+                       <!--  <li><a href="/corp/index" target="_blank">合作专区</a></li>
+                        <li><a href="/about/us" target="_blank">关于我们</a></li> -->
+                    </ul>
+                </div>
+                <p>Copyright © 2017 imooc.com All Rights Reserved | 京ICP备 13046642号-2</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="J_GotoTop" class="elevator">
+
+    <a href="/user/feedback" class="elevator-msg" target="_blank">
+        <i class="icon-feedback"></i>
+        <span class="">意见反馈</span>
+    </a>
+    <a href="/about/faq" class="elevator-faq" target="_blank">
+        <i class="icon-ques"></i>
+        <span class="">常见问题</span>
+    </a>
+    <a href="http://www.imooc.com/mobile/app" target="_blank" class="elevator-app" >
+        <i class="icon-appdownload"></i>
+        <span class="">APP下载</span>
+        <div class="elevator-app-box"></div>
+    </a>
+    <a href="javascript:void(0)" class="elevator-weixin no-goto" id="js-elevator-weixin" >
+        <i class="icon-wxgzh"></i>
+        <span class="">官方微信</span>
+        <div class="elevator-weixin-box"></div>
+    </a>
+    <a href="javascript:void(0)" class="elevator-top no-goto" style="display:none" id="backTop">
+        <i class="icon-up2"></i>
+        <span class="">返回顶部</span>
+    </a>
+</div>
+
+
+
+<script type="text/javascript" charset="utf-8" src="/static/lib/ueditor/ueditor.final.min.js"></script>
+
+<!--script-->
+<script type="text/javascript" src="//moco.imooc.com/static/monitor/error.js"></script>
+<script src="/passport/static/scripts/ssologin.js?v=2.0"></script>
+<script type="text/javascript" src="/static/sea-modules/seajs/seajs/2.1.1/sea.js"></script>
+<script type="text/javascript" src="/static/sea_config.js?v=201707131454"></script>
+<script type="text/javascript">seajs.use("/static/page/"+OP_CONFIG.module+"/"+OP_CONFIG.page);</script>
+
+
+
+
+<div style="display: none">
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Ff0cfcccd7b1393990c78efdeebff3968' type='text/javascript'%3E%3C/script%3E"));
+(function (d) {
+window.bd_cpro_rtid="rHT4P1c";
+var s = d.createElement("script");s.type = "text/javascript";s.async = true;s.src = location.protocol + "//cpro.baidu.com/cpro/ui/rt.js";
+var s0 = d.getElementsByTagName("script")[0];s0.parentNode.insertBefore(s, s0);
+})(document);
+</script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+</div>
+</body>
+</html>
