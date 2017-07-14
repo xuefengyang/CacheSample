@@ -1,0 +1,2 @@
+# CacheSample
+php cache tricks
